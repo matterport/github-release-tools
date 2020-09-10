@@ -1,4 +1,7 @@
-const octokit = require('@octokit/rest')();
+const octokit = require('@octokit/rest')({
+    auth: process.env.GITHUB_TOKEN,
+    baseUrl: process.env.GITHUB_BASE_URL,
+});
 const Bottleneck = require('bottleneck');
 
 // This module provides an instance of the github API, with each method
