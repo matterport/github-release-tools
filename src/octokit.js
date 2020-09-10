@@ -1,6 +1,7 @@
+const baseUrl = process.env.GITHUB_BASE_URL ? process.env.GITHUB_BASE_URL + '/api/v3' : undefined;
 const octokit = require('@octokit/rest')({
     auth: process.env.GITHUB_TOKEN,
-    baseUrl: process.env.GITHUB_BASE_URL,
+    baseUrl,
 });
 const Bottleneck = require('bottleneck');
 
