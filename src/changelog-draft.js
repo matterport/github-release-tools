@@ -6,7 +6,8 @@ const {parseEntriesFromPullRequests, categorizeEntries} = require('../src/parse-
 const renderSections = require('../src/render');
 
 module.exports = async function(octokit, {repo: githubRepo, current, previous, format}) {
-    const {owner, name: repo} = parse(githubRepo || await getRemoteUrl());
+    const url = await getRemoteUrl();
+    const {owner, name: repo} = parse(githubRepo || url);
     previous = previous || (await octokit.repos.getLatestRelease({repo, owner})).data.tag_name;
 
     console.error(`Changes: ${owner}/${repo} ${previous}...${current}`);
@@ -16,7 +17,13 @@ module.exports = async function(octokit, {repo: githubRepo, current, previous, f
     const sections = categorizeEntries(entries);
 
     console.error(`\nFound ${sections.skip.entries.length} Pull Requests that skip changelogs.\n`);
+    const header = `
+Current: [${current}](${process.env.GITHUB_BASE_URL}/${owner}/${repo}/releases/tag/${current})
+Previous: [${previous}](${process.env.GITHUB_BASE_URL}/${owner}/${repo}/releases/tag/${previous})
+Compare: [${previous}...${current}](${process.env.GITHUB_BASE_URL}/${owner}/${repo}/compare/${previous}...${current})
+
+`;
     const formattedSections = renderSections(sections, format);
 
-    return formattedSections;
+    return header + formattedSections;
 };
