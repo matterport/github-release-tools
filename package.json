@@ -7,14 +7,15 @@
   "bin": {
     "backport": "bin/backport",
     "branch-permissions": "bin/branch-permissions",
-    "changelog-draft": "bin/changelog-draft"
+    "changelog-draft": "bin/changelog-draft",
+    "list-releases": "bin/list-releases"
   },
   "license": "MIT",
   "scripts": {
     "test": "tap test/**/*.test.js"
   },
   "dependencies": {
-    "@octokit/rest": "^15.2.7",
+    "@octokit/rest": "^15.18.3",
     "bottleneck": "^2.3.0",
     "gitconfiglocal": "^2.0.1",
     "latest-semver": "^1.0.0",

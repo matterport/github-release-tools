@@ -1,0 +1,40 @@
+#!/usr/bin/env node
+
+const prependFile = require('prepend-file');
+const octokit = require('../src/octokit');
+const listReleases = require('../src/get-release-tags');
+
+const description =  `\
+Generate a list of all previous shipped releases`;
+
+require('yargs').usage('$0', description, {
+    'r': {
+        describe: 'the github repository, in "owner/repository" form. Defaults to the repository found in the current directory.',
+        alias: 'repo',
+        type: 'string'
+    },
+    'n': {
+        describe: 'The number of releases to return on the page',
+        alias: 'per_page',
+        type: 'number'
+    },
+    'o': {
+        describe: 'the output file. If it exists, output will be prepended to the existing contents.',
+        alias: 'output',
+        type: 'string'
+    }
+}, async (argv) => {
+    const token = process.env.GITHUB_TOKEN;
+    if (!token) {
+        console.error('GITHUB_TOKEN must be set');
+        process.exit(1);
+    }
+    octokit.authenticate({ type: 'token', token });
+    const rendered = await listReleases(octokit, argv);
+
+    if (argv.o) {
+        prependFile.sync(argv.o, rendered);
+    } else {
+        console.log(rendered);
+    }
+}).argv;
