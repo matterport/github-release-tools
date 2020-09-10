@@ -13,6 +13,8 @@ npm install -g @mapbox/github-release-tools
 
 Create a [personal Github access token](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/) and set the value to the `GITHUB_TOKEN` environment variable.
 
+Optionally add a `GITHUB_BASE_URL` in the form of `https://api.<domain>.com/` for use with hosted Github Enterprise. If omitted, it will default to the standard octokit url, and work against github.com api.
+
 ## `backport`
 
 ```
